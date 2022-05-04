@@ -8,6 +8,8 @@ require("../models/User");
 const User = mongoose.model("user");
 
 // login
+
+// login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -56,11 +58,14 @@ router.post("/login", async (req, res) => {
 
 //Register
 router.post("/register", async (req, res) => {
-  const { name, email, password, confirmpassword } = req.body;
+  const { name, userName, email, password, confirmpassword, UserImage } =
+    req.body;
 
-  // validations
+  // validations;
   if (!name) {
     return res.status(422).json({ msg: "O nome é obrigatório!" });
+  } else if (!userName) {
+    return res.status(422).json({ msg: "O Nome de usuario é obrigatório!" });
   } else if (!email) {
     return res.status(422).json({ msg: "O email é obrigatório!" });
   } else if (!password) {
@@ -72,21 +77,28 @@ router.post("/register", async (req, res) => {
   }
 
   // check if user exists
-  const userExists = await User.findOne({ email: email });
+  const userEmailExists = await User.findOne({ email: email });
+  const userNameExists = await User.findOne({ userName: userName });
 
-  if (userExists) {
+  if (userEmailExists) {
     return res.status(422).json({ msg: "Por favor, utilize outro e-mail!" });
+  } else if (userNameExists) {
+    return res
+      .status(422)
+      .json({ msg: "Por favor, utilize outro Nome de usuario!" });
   }
 
   // create password
   const salt = await bcrypt.genSalt(12);
   const passwordHash = await bcrypt.hash(password, salt);
-
+  let UserIp = req.header("x-forwarded-for") || req.connection.remoteAddress;
   // create user
   const user = new User({
     name,
+    userName,
     email,
     password: passwordHash,
+    IP: UserIp,
   });
 
   try {
@@ -96,7 +108,7 @@ router.post("/register", async (req, res) => {
       .status(201)
       .json({ msg: "Usuário criado com sucesso!", userCriado: true });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(500).json({ msg: "eroo" });
   }
 });
 

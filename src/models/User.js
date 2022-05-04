@@ -1,18 +1,71 @@
 const mongoose = require("mongoose");
 
-const User = mongoose.model("user", {
-  name: {
-    type: String,
-    require: true,
+const User = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      min: 3,
+      max: 20,
+    },
+    userName: {
+      type: String,
+      required: true,
+      min: 3,
+      max: 20,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      max: 50,
+    },
+    password: {
+      type: String,
+      required: true,
+      min: 8,
+    },
+    UserImage: {
+      type: String,
+      default: "",
+    },
+    IP: {
+      type: String,
+    }
   },
-  email: {
-    type: String,
-    require: true,
-  },
-  password: {
-    type: String,
-    require: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
-module.exports = User;
+module.exports = mongoose.model("user", User);
+
+// const userSchema = new mongoose.Schema({
+//   username: {
+//     type: String,
+//     required: true,
+//     min: 3,
+//     max: 20,
+//     unique: true,
+//   },
+//   email: {
+//     type: String,
+//     required: true,
+//     unique: true,
+//     max: 50,
+//   },
+//   password: {
+//     type: String,
+//     required: true,
+//     min: 8,
+//   },
+//   isAvatarImageSet: {
+//     type: Boolean,
+//     default: false,
+//   },
+//   avatarImage: {
+//     type: String,
+//     default: "",
+//   },
+// });

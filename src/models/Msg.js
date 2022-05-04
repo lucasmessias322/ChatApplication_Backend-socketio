@@ -1,22 +1,31 @@
 const mongoose = require("mongoose");
 
-const Message = mongoose.model("message", {
+const Message = new mongoose.Schema(
+  {
     userId: {
-        type: String,
-        require: true,
+      type: String,
+      require: true,
     },
     userName: {
-        type: String,
-        require: true,
+      type: String,
+      require: true,
     },
     msg: {
-        type: String,
-        require: true,
+      type: String,
+      require: true,
     },
-    msgColor:{
-        type: String,
-        require: true,
+    msgColor: {
+      type: String,
+      require: true,
+    },
+    sendendTime: {
+      type: String,
+      require: true
     }
-});
+  },
+  {
+    timestamps: true,
+  }
+);
 
-module.exports = Message;
+module.exports = mongoose.model("message", Message);
