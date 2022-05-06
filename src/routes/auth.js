@@ -108,7 +108,7 @@ router.post("/register", async (req, res) => {
       .status(201)
       .json({ msg: "Usuário criado com sucesso!", userCriado: true });
   } catch (error) {
-    res.status(500).json({ msg: "eroo" });
+    res.status(500).json({ erro: true, msg: "Erro ao criar novo usuario" });
   }
 });
 
